@@ -1,0 +1,67 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Some HTML in here</title>
+        <style>
+            body {
+                background-color: #c1d5e3
+                }
+            #st {
+                font: 40px "Fira Sans", sans-serif;
+                width: 100%;
+                text-align: center;
+                height: 100px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                margin: auto 0;
+                }
+            input {
+                width: 300px;
+                height: 40px;
+                }
+        </style>
+    </head>
+    <body>
+        <div id = 'st'>
+            <input name="num1" id="num1" type="text" size="1" />
+            <input type="text" id="sign" list="list" size="1"/>
+            <datalist id="list">
+              <option>+</option>
+              <option>-</option>
+              <option>*</option>
+              <option>/</option>
+            </datalist>
+            <input name="num2" id="num2" type="text" size="1" />
+
+
+
+            <p><button onclick="send()">Посчитать</button></p>
+        </div>
+        <div id="otvet"></div>
+
+    <script type="text/javascript">
+        async function send(){
+            const num1 = document.getElementById("num1").value;
+            const num2 = document.getElementById("num2").value;
+            const sign = document.getElementById("sign").value;
+
+            const response = await fetch("/otv", {
+                    method: "POST",
+                    headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        num1: num1,
+                        num2: num2,
+                        sign: sign
+                    })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById("st").textContent = data.st;
+                }
+                else
+                    console.log(response);
+        }
+    </script>
+    </body>
+</html>
